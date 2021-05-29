@@ -3,32 +3,13 @@ RGB_MATRIX_EFFECT(TYPING_HEATMAP)
 #    ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
 #        ifndef RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS
-#            define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 25
+#            define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 10000000
 #        endif
 
 void process_rgb_matrix_typing_heatmap(keyrecord_t* record) {
     uint8_t row   = record->event.key.row;
     uint8_t col   = record->event.key.col;
-    uint8_t m_row = row - 1;
-    uint8_t p_row = row + 1;
-    uint8_t m_col = col - 1;
-    uint8_t p_col = col + 1;
-
-    if (m_col < col) g_rgb_frame_buffer[row][m_col] = qadd8(g_rgb_frame_buffer[row][m_col], 16);
-    g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], 32);
-    if (p_col < MATRIX_COLS) g_rgb_frame_buffer[row][p_col] = qadd8(g_rgb_frame_buffer[row][p_col], 16);
-
-    if (p_row < MATRIX_ROWS) {
-        if (m_col < col) g_rgb_frame_buffer[p_row][m_col] = qadd8(g_rgb_frame_buffer[p_row][m_col], 13);
-        g_rgb_frame_buffer[p_row][col] = qadd8(g_rgb_frame_buffer[p_row][col], 16);
-        if (p_col < MATRIX_COLS) g_rgb_frame_buffer[p_row][p_col] = qadd8(g_rgb_frame_buffer[p_row][p_col], 13);
-    }
-
-    if (m_row < row) {
-        if (m_col < col) g_rgb_frame_buffer[m_row][m_col] = qadd8(g_rgb_frame_buffer[m_row][m_col], 13);
-        g_rgb_frame_buffer[m_row][col] = qadd8(g_rgb_frame_buffer[m_row][col], 16);
-        if (p_col < MATRIX_COLS) g_rgb_frame_buffer[m_row][p_col] = qadd8(g_rgb_frame_buffer[m_row][p_col], 13);
-    }
+    g_rgb_frame_buffer[row][col] = qadd8(g_rgb_frame_buffer[row][col], 1);
 }
 
 // A timer to track the last time we decremented all heatmap values.
